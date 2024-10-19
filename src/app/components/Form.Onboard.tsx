@@ -16,9 +16,13 @@ import {
 } from "@/components/ui/card";
 import type { FormData } from "@/app/components/interfaces";
 import { updateOnboardComplete } from "@/lib/query";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function OnboardingQuestionnaire() {
+  const { push } = useRouter();
   const [step, setStep] = useState(1);
+  const [submitBtnStatus, setSubmitBtnStatus] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     educationLevel: "",
     learningStyle: [],
@@ -45,17 +49,32 @@ export default function OnboardingQuestionnaire() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    const timeOut = 1500;
     e.preventDefault();
     if (step < 2) {
       setStep((prev) => prev + 1);
     } else {
       console.log("Form submitted:", formData);
-      await updateOnboardComplete(formData);
-      // Here you would typically send the data to your backend
+      try {
+        setSubmitBtnStatus(true);
+        const result = await updateOnboardComplete(formData);
+        if (result) {
+          toast.success("You're good to go! Redirecting...", {
+            duration: timeOut,
+          });
+          setTimeout(() => {
+            push("/ask");
+          }, timeOut);
+        }
+      } catch (error) {
+        setSubmitBtnStatus(false);
+        toast.error("Welp! Couldn't submit. Try again.");
+        throw error;
+      }
     }
   };
 
-  const isStepValid = () => {
+  function isNextDisabled() {
     switch (step) {
       case 1:
         return (
@@ -68,7 +87,7 @@ export default function OnboardingQuestionnaire() {
       default:
         return false;
     }
-  };
+  }
 
   return (
     <Card className="w-full max-w-2xl mx-auto bg-white/[.07] backdrop-blur-sm border-white/[0.18]">
@@ -191,9 +210,11 @@ export default function OnboardingQuestionnaire() {
           <Button
             type="submit"
             onClick={handleSubmit}
-            disabled={!isStepValid()}
+            disabled={submitBtnStatus || !isNextDisabled()}
           >
-            {step === 2 ? "Submit" : "Next"}
+            {step === 2
+              ? `${submitBtnStatus ? "Submitting..." : "Submit"}`
+              : "Next"}
           </Button>
         </div>
       </CardFooter>
