@@ -20,10 +20,12 @@ model User {
   learning_style   String[]
   explanation_type String[]
   hobbies          String[]
+  other_hobbies    String?
   Session          Session[]
   Account          Account[]
 
-  onboard_complete Boolean  @default(false)
+  onboard_complete Boolean @default(false)
+
 
   @@unique([email])
   @@map("user")

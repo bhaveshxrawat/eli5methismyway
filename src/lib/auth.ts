@@ -1,8 +1,7 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/db";
 
-const prisma = new PrismaClient();
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql", // or "mysql", "postgresql", ...etc
@@ -29,6 +28,12 @@ export const auth = betterAuth({
       },
       hobbies: {
         type: "string[]",
+        required: false,
+        defaultValue: undefined,
+        input: true,
+      },
+      other_hobbies: {
+        type: "string",
         required: false,
         defaultValue: undefined,
         input: true,

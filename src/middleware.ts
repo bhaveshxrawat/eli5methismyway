@@ -3,11 +3,30 @@ import { NextResponse } from "next/server";
 
 export default authMiddleware({
   customRedirect: async (session, request) => {
+    // @ts-expect-error wrong type
+    const onboard_complete = session?.user?.onboard_complete;
     const baseURL = request.nextUrl.origin;
-    if (request.nextUrl.pathname === "/sign-in" && session) {
+    if (
+      session &&
+      onboard_complete &&
+      (request.nextUrl.pathname === "/sign-in" ||
+        request.nextUrl.pathname === "/" ||
+        request.nextUrl.pathname === "/onboard")
+    ) {
       return NextResponse.redirect(new URL("/ask", baseURL));
     }
-    if (request.nextUrl.pathname === "/dashboard" && !session) {
+    if (
+      session &&
+      !onboard_complete &&
+      (request.nextUrl.pathname === "/ask" || request.nextUrl.pathname === "/")
+    ) {
+      return NextResponse.redirect(new URL("/onboard", baseURL));
+    }
+    if (
+      !session &&
+      (request.nextUrl.pathname === "/ask" ||
+        request.nextUrl.pathname === "/onboard")
+    ) {
       return NextResponse.redirect(new URL("/sign-in", baseURL));
     }
     return NextResponse.next();
@@ -15,5 +34,5 @@ export default authMiddleware({
 });
 
 export const config = {
-  matcher: ["/ask", "/sign-in"],
+  matcher: ["/", "/ask", "/sign-in", "/onboard"],
 };

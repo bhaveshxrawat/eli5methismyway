@@ -2,14 +2,9 @@
 
 import Link from "next/link";
 import { Moon, Sun } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import { useSession } from "@/lib/auth-client";
+import { Button, buttonVariants } from "@/components/ui/button";
 
 export default function AppNavBar() {
-  const router = useRouter();
-  const { data: session } = useSession();
-  console.log(session);
   function handleTheme() {
     if (document.documentElement.classList.contains("dark")) {
       document.documentElement.classList.remove("dark");
@@ -25,13 +20,9 @@ export default function AppNavBar() {
         </span>
       </Link>
       <nav className="ml-auto flex gap-4 sm:gap-6">
-        if(session)
-        <Button variant="ghost" onClick={() => router.push("/sign-in")}>
+        <Link className={buttonVariants({ variant: "ghost" })} href="/sign-in">
           Sign In
-        </Button>
-        <Button variant="ghost" onClick={() => router.push("/ask")}>
-          Ask
-        </Button>
+        </Link>
         <Button variant="ghost" size="icon" onClick={handleTheme}>
           <Sun className="h-[1.2rem] w-[1.2rem] hidden dark:block" />
           <Moon className="h-[1.2rem] w-[1.2rem] dark:hidden" />

@@ -1,0 +1,17 @@
+{
+  "learningStyle": [
+    "Reading articles or textbooks",
+    "Watching videos",
+    "Interactive games or quizzes",
+    "Listening to podcasts or lectures",
+    "Group discussions or study groups"
+  ],
+  "explanationType": [
+    "Simple definitions",
+    "Analogies and examples",
+    "Visual aids (diagrams, charts)",
+    "Step-by-step processes",
+    "Real-world applications"
+  ],
+  "hobbies": ["Sports", "Music", "Gaming", "Reading", "Traveling", "Technology"]
+}
