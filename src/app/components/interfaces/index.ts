@@ -6,4 +6,11 @@ interface FormData {
   otherHobby: string;
 }
 
-export type { FormData };
+interface AIRes {
+  topic: string;
+  definition: string;
+  explanation: string;
+  example: string;
+}
+
+export type { FormData, AIRes };
