@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import { prmtGemini } from "@/lib/promptGemini";
 import { Dispatch, SetStateAction, useRef, useState } from "react";
