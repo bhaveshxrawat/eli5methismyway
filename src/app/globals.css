@@ -8,22 +8,6 @@
   }
 }
 
-@property --one {
-  syntax: "<percentage>";
-  initial-value: 0%;
-  inherits: false;
-}
-@property --two {
-  syntax: "<percentage>";
-  initial-value: 15%;
-  inherits: false;
-}
-@property --three {
-  syntax: "<percentage>";
-  initial-value: 30%;
-  inherits: false;
-}
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -93,24 +77,4 @@
   .container {
     margin-inline: auto;
   }
-
-  .no-userInteraction {
-    mask: linear-gradient(130deg, rgba(0,0,0,0.3) var(--one), rgba(255,255,255,0.5) var(--two), rgba(0,0,0,0.3) var(--three));
-    pointer-events: none;
-    cursor: not-allowed;
-    animation: skeleton infinite forwards 1300ms;
-  }
-  @keyframes skeleton {
-    from {
-      --one: 0%;
-      --two: 15%;
-      --three: 30%;
-    }
-    to {
-      --one: 70%;
-      --two: 85%;
-      --three: 100%;
-    }
-  }
-
 }

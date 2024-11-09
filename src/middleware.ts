@@ -6,6 +6,15 @@ export default authMiddleware({
     // @ts-expect-error wrong type
     const onboard_complete = session?.user?.onboard_complete;
     const baseURL = request.nextUrl.origin;
+    const isDev = process.env.NODE_ENV === "development"
+    const response = NextResponse.next({
+      request: {
+        headers: request.headers,
+      },
+    });
+    if(isDev) {
+      return response;
+    }
     if (
       session &&
       onboard_complete &&
@@ -27,6 +36,7 @@ export default authMiddleware({
       (request.nextUrl.pathname === "/ask" ||
         request.nextUrl.pathname === "/onboard")
     ) {
+      console.log(process.env.NODE_ENV, process.env.DEV_MODE)
       return NextResponse.redirect(new URL("/sign-in", baseURL));
     }
     return NextResponse.next();

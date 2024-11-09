@@ -2,6 +2,7 @@
 
 import SuggestionTile from "./Suggestions.Card";
 import questions from "@/lib/utils/suggestions.json";
+import "./Suggestion.css"
 import {Dispatch, SetStateAction, useEffect, useRef, useState} from "react";
 import type {AIRes} from "@/app/components/interfaces";
 import {prmtGemini} from "@/lib/promptGemini";
