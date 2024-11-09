@@ -1,6 +1,6 @@
 @property --one {
     syntax: "<percentage>";
-    initial-value: 0%;
+    initial-value: .5%;
     inherits: false;
 }
 @property --two {
@@ -22,7 +22,7 @@
 }
 @keyframes skeleton {
     from {
-        --one: 0%;
+        --one: .5%;
         --two: 5%;
         --three: 10%;
     }
