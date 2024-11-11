@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import "./Animations.css"
 
 interface Card {
   topic: string;
@@ -8,7 +9,7 @@ interface Card {
 }
 const AskResultCard = ({ topic, definition, explanation, example }: Card) => {
   return (
-    <Card>
+    <Card className="wave-in">
       <CardHeader className="text-2xl font-semibold">{topic}</CardHeader>
       <CardContent className="space-y-4">
         <article className="space-y-2">
