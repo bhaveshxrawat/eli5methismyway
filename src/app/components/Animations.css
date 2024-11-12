@@ -1,82 +1,91 @@
 @property --one {
-    syntax: "<percentage>";
-    initial-value: 0.5%;
-    inherits: false;
+  syntax: "<percentage>";
+  initial-value: 0.5%;
+  inherits: false;
 }
 
 @property --two {
-    syntax: "<percentage>";
-    initial-value: 15%;
-    inherits: false;
+  syntax: "<percentage>";
+  initial-value: 15%;
+  inherits: false;
 }
 
 @property --three {
-    syntax: "<percentage>";
-    initial-value: 30%;
-    inherits: false;
+  syntax: "<percentage>";
+  initial-value: 30%;
+  inherits: false;
 }
 
 @property --oneW {
-    syntax: "<percentage>";
-    initial-value: 0.5%;
-    inherits: false;
+  syntax: "<percentage>";
+  initial-value: 0.5%;
+  inherits: false;
 }
 
 @property --twoW {
-    syntax: "<percentage>";
-    initial-value: 10%;
-    inherits: false;
+  syntax: "<percentage>";
+  initial-value: 10%;
+  inherits: false;
 }
 
 @property --threeW {
-    syntax: "<percentage>";
-    initial-value: 20%;
-    inherits: false;
-
+  syntax: "<percentage>";
+  initial-value: 20%;
+  inherits: false;
 }
 
 .no-userInteraction {
-    mask: linear-gradient(130deg, rgba(0, 0, 0, 0.3) var(--one), rgba(255, 255, 255, 0.5) var(--two), rgba(0, 0, 0, 0.3) var(--three));
-    pointer-events: none;
-    cursor: not-allowed;
-    animation: skeleton infinite forwards 1300ms ease-in-out;
+  mask: linear-gradient(
+    130deg,
+    rgba(0, 0, 0, 0.3) var(--one),
+    rgba(255, 255, 255, 0.5) var(--two),
+    rgba(0, 0, 0, 0.3) var(--three)
+  );
+  pointer-events: none;
+  cursor: not-allowed;
+  animation: skeleton infinite forwards 1300ms ease-in-out;
 }
 
 @keyframes skeleton {
-    from {
-        --one: .5%;
-        --two: 5%;
-        --three: 10%;
-    }
+  from {
+    --one: 0.5%;
+    --two: 5%;
+    --three: 10%;
+  }
 
-    50% {
-        --one: 35%;
-        --two: 50%;
-        --three: 75%;
-    }
+  50% {
+    --one: 35%;
+    --two: 50%;
+    --three: 75%;
+  }
 
-    to {
-        --one: 90%;
-        --two: 95%;
-        --three: 100%;
-    }
+  to {
+    --one: 90%;
+    --two: 95%;
+    --three: 100%;
+  }
 }
 
 .wave-in {
-    mask: radial-gradient(circle at 50% 0%, rgba(0, 0, 0) var(--oneW), rgb(255, 255, 255, 0.5) var(--twoW), rgb(0, 0, 0) var(--threeW));
-    animation: waveIn forwards 650ms ease-in-out;
+  mask: radial-gradient(
+    circle at 50% 0%,
+    rgba(0, 0, 0) var(--oneW),
+    rgb(255, 255, 255, 0.5) var(--twoW),
+    rgb(0, 0, 0) var(--threeW)
+  );
+  animation: waveIn forwards 650ms ease-in-out 150ms;
 }
 
 @keyframes waveIn {
-    from {
-        --oneW: .5%;
-        --twoW: 10%;
-        --threeW: 20%;
-    }
+  from {
+    --oneW: 0.5%;
+    --twoW: 10%;
+    --threeW: 20%;
+  }
 
-    to {
-        --oneW: 90%;
-        --twoW: 100%;
-        --threeW: 110%;
-    }
+  to {
+    --oneW: 90%;
+    --twoW: 110%;
+    --threeW: 120%;
+  }
 }
