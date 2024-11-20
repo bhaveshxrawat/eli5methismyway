@@ -1,6 +1,12 @@
 import SignInWithGoogle from "@/app/components/SignInGoogle";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Sign In - ELI5 Me",
+  description: "Get Started With ELI5 Me - Your Personalised Learning Guide",
+};
 
 export default function SignInPage() {
   return (
