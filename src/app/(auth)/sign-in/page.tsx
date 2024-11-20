@@ -2,7 +2,7 @@ import SignInWithGoogle from "@/app/components/SignInGoogle";
 import Image from "next/image";
 import Link from "next/link";
 
-const page = () => {
+export default function SignInPage() {
   return (
     <>
       <header className="fixed w-full p-4">
@@ -21,6 +21,4 @@ const page = () => {
       </main>
     </>
   );
-};
-
-export default page;
+}

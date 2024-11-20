@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "Your Personalised Learning Guide",
 };
 
-const Ask = () => {
+export default function Ask() {
   return (
     <>
       <AskNavbar />
@@ -23,6 +23,4 @@ const Ask = () => {
       </main>
     </>
   );
-};
-
-export default Ask;
+}
