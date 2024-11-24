@@ -25,7 +25,7 @@ const TryFormAccordion = () => {
         <AccordionTrigger className="p-6 text-xl font-normal group">
           <p>
             Interest Questionnaire
-            <small className="opacity-0 text-sm ml-2 mr-auto group-[[data-state='open']]:opacity-100 transition-opacity">
+            <small className="opacity-0 invisible text-sm ml-2 mr-auto group-[[data-state='open']]:opacity-100 transition-opacity group-[[data-state='open']]:visible group-[[data-state='closed']]:transition-[visibility] group-[[data-state='closed']]:delay-150">
               (<Link href="/sign-in">Sign in to save the preference.</Link>)
             </small>
           </p>
