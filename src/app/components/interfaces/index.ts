@@ -1,3 +1,8 @@
+interface Credits {
+  creditsLeft: number;
+  totalCredits: number;
+}
+
 interface FormData {
   educationLevel: string;
   learningStyle: string[];
@@ -13,4 +18,4 @@ interface AIRes {
   example: string;
 }
 
-export type { FormData, AIRes };
+export type { Credits, FormData, AIRes };

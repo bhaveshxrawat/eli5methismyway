@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import AskNavbar from "../components/Ask.Navbar";
-import Wrapper from "../components/Res.Form.Wrapper";
+import ResAskFormWrapper from "../components/Res.AskForm.Wrapper";
 
 export const metadata: Metadata = {
   title: "Ask - ELI5 Me",
@@ -17,7 +17,7 @@ export default function Ask() {
             <h3 className="text-center text-5xl font-semibold">
               Learn your way!
             </h3>
-            <Wrapper />
+            <ResAskFormWrapper />
           </div>
         </section>
       </main>

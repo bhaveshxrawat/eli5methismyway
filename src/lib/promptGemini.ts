@@ -3,6 +3,7 @@
 import { auth } from "@/lib/auth";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { headers } from "next/headers";
+import type { FormData } from "@/app/components/interfaces";
 
 const apiKey = process.env.GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(apiKey!);
@@ -10,7 +11,7 @@ const genAI = new GoogleGenerativeAI(apiKey!);
 const model = genAI.getGenerativeModel({
   model: "gemini-1.5-pro",
   systemInstruction:
-    "You're highly intelligent teaching companion that leverages the information of the user to give explanation of complicated topics in eli5 way with personalized and engaging learning experience with the help of user information that you need to extract from the JSON. Note: the response should be in this JSON format: {topic: value, definition: value, explanation: value, example: value}",
+    "You are a highly intelligent teaching companion who uses personalized information to explain complex topics in an easy-to-understand, 'Explain Like I'm 5' (ELI5) style. By extracting relevant details from the user's data in the JSON, you tailor your explanations to suit their learning needs, ensuring an engaging and personalised experience. Note: the response should be in this JSON format: {topic: value, definition: value, explanation: value, example: value}",
 });
 
 const generationConfig = {
@@ -21,27 +22,51 @@ const generationConfig = {
   responseMimeType: "application/json",
 };
 
-export async function prmtGemini(input: string) {
+export async function prmtGemini(
+  input: string,
+  trialUserData?: FormData | undefined
+) {
   const session = await auth.api.getSession({
     headers: headers(),
   });
-  if (!session) {
-    return "Not logged in";
-  }
-  const {
-    education_level,
-    learning_style,
-    explanation_type,
-    hobbies,
-    other_hobbies,
-  } = session.user;
   const user_information = {
-    education_level: education_level,
-    learning_style: learning_style,
-    explanation_type: explanation_type,
-    hobbies: hobbies,
-    other_hobbies: other_hobbies,
-  };
+    educationLevel: "",
+    learningStyle: [],
+    explanationType: [],
+    hobbies: [],
+    otherHobby: "",
+  } as FormData;
+  console.log(session);
+  if (!session) {
+    user_information.educationLevel = trialUserData?.educationLevel.trim()
+      ? trialUserData?.educationLevel
+      : "High School";
+    user_information.learningStyle = trialUserData?.learningStyle.length
+      ? trialUserData?.learningStyle
+      : ["Reading articles or textbooks"];
+    user_information.explanationType = trialUserData?.explanationType.length
+      ? trialUserData?.explanationType
+      : ["Simple definitions and analogies"];
+    user_information.hobbies = trialUserData?.hobbies || [];
+    user_information.otherHobby = trialUserData?.otherHobby || "";
+    console.log(user_information, "without session");
+  } else {
+    const {
+      education_level,
+      learning_style,
+      explanation_type,
+      hobbies,
+      other_hobbies,
+    } = session.user;
+
+    user_information.educationLevel = education_level;
+    user_information.learningStyle = learning_style;
+    user_information.explanationType = explanation_type;
+    user_information.hobbies = hobbies;
+    user_information.otherHobby = other_hobbies ?? "";
+    console.log(user_information);
+  }
+
   const result = model.generateContent({
     generationConfig,
     contents: [

@@ -10,32 +10,32 @@ export const auth = betterAuth({
     additionalFields: {
       education_level: {
         type: "string",
-        required: false,
-        defaultValue: undefined,
+        required: true,
+        defaultValue: "",
         input: true,
       },
       learning_style: {
         type: "string[]",
-        required: false,
-        defaultValue: undefined,
+        required: true,
+        defaultValue: "",
         input: true,
       },
       explanation_type: {
         type: "string[]",
-        required: false,
-        defaultValue: undefined,
+        required: true,
+        defaultValue: "",
         input: true,
       },
       hobbies: {
         type: "string[]",
-        required: false,
-        defaultValue: undefined,
+        required: true,
+        defaultValue: "",
         input: true,
       },
       other_hobbies: {
         type: "string",
         required: false,
-        defaultValue: undefined,
+        defaultValue: "",
         input: true,
       },
       onboard_complete: {
@@ -53,3 +53,5 @@ export const auth = betterAuth({
     },
   },
 });
+
+export type Session = typeof auth.$Infer.Session;

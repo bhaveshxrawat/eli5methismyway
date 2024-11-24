@@ -23,7 +23,7 @@ export default function Home() {
               </p>
 
               <Link
-                href="/sign-in"
+                href="/try"
                 className={buttonVariants({ variant: "default" })}
               >
                 <Lightbulb className="mr-2 h-4 w-4" /> Try Now
@@ -90,7 +90,7 @@ export default function Home() {
                 href="/sign-in"
                 className={buttonVariants({ variant: "default" })}
               >
-                Get Started
+                ELI5Me
               </Link>
             </div>
           </div>

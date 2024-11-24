@@ -20,16 +20,17 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 export default function OnboardingQuestionnaire() {
-  const { push } = useRouter();
-  const [step, setStep] = useState(1);
-  const [submitBtnStatus, setSubmitBtnStatus] = useState(false);
-  const [formData, setFormData] = useState<FormData>({
+  const initialFormData = {
     educationLevel: "",
     learningStyle: [],
     explanationType: [],
     hobbies: [],
     otherHobby: "",
-  });
+  } as FormData;
+  const { push } = useRouter();
+  const [step, setStep] = useState(1);
+  const [submitBtnStatus, setSubmitBtnStatus] = useState(false);
+  const [formData, setFormData] = useState(initialFormData);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -37,15 +38,26 @@ export default function OnboardingQuestionnaire() {
   };
 
   const handleCheckboxChange = (name: keyof FormData, value: string): void => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]:
-        prev[name] instanceof Array
-          ? prev[name].includes(value)
-            ? prev[name].filter((item) => item !== value)
-            : [...prev[name], value]
-          : [value],
-    }));
+    setFormData((prev) => {
+      if (prev[name] instanceof Array) {
+        if (prev[name].includes(value)) {
+          return {
+            ...prev,
+            [name]: prev[name].filter((item) => item !== value),
+          };
+        } else {
+          return {
+            ...prev,
+            [name]: [...prev[name], value],
+          };
+        }
+      } else {
+        return {
+          ...prev,
+          [name]: [value],
+        };
+      }
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
