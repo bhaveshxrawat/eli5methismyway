@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { OpenPanelComponent } from "@openpanel/nextjs";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
@@ -29,7 +30,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased font-sans`}
       >
-        <div>{children}</div>
+        <div>
+          <OpenPanelComponent
+            clientId="bb986662-2548-4e90-802a-96911ecadf4d"
+            trackScreenViews={true}
+            trackOutgoingLinks={true}
+          />
+          {children}
+        </div>
         <Toaster />
       </body>
     </html>
