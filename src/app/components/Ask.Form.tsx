@@ -30,7 +30,8 @@ export default function AskForm({
           answer = await prmtGemini(question, trialUserFormData);
           setAIRes(answer);
         }
-      } catch {
+      } catch (e) {
+        console.log(e);
         toast.error("Something went wrong", { duration: 1300 });
         setDisableBtn(false);
       } finally {
@@ -54,7 +55,7 @@ export default function AskForm({
         ></textarea>
         <Button
           type="submit"
-          className={`w-20 ${disableBtn ? "animate-pulse" : ""}`}
+          className={`self-start ${disableBtn ? "animate-pulse" : ""}`}
           disabled={disableBtn}
         >
           {disableBtn ? "Generating..." : "Ask"}
