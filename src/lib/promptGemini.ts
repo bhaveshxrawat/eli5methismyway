@@ -36,7 +36,6 @@ export async function prmtGemini(
     hobbies: [],
     otherHobby: "",
   } as FormData;
-  console.log(session);
   if (!session) {
     user_information.educationLevel = trialUserData?.educationLevel.trim()
       ? trialUserData?.educationLevel
@@ -49,7 +48,6 @@ export async function prmtGemini(
       : ["Simple definitions and analogies"];
     user_information.hobbies = trialUserData?.hobbies || [];
     user_information.otherHobby = trialUserData?.otherHobby || "";
-    console.log(user_information, "without session");
   } else {
     const {
       education_level,
@@ -64,7 +62,6 @@ export async function prmtGemini(
     user_information.explanationType = explanation_type;
     user_information.hobbies = hobbies;
     user_information.otherHobby = other_hobbies ?? "";
-    console.log(user_information);
   }
 
   const result = model.generateContent({
