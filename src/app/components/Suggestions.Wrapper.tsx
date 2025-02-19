@@ -1,29 +1,32 @@
 "use client";
 
 import SuggestionTile from "./Suggestions.Card";
-import questions from "@/lib/utils/suggestions.json";
+import { suggestions } from "@/lib/utils/suggestions";
 import "./Animations.css";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import type { AIRes } from "@/app/components/interfaces";
 import { prmtGemini } from "@/lib/promptGemini";
 import { toast } from "sonner";
+import { useCreditStore } from "@/store/useCreditsStore";
 
-const randomQues = (length: number): string[] => {
+function randomQues(length: number): string[] {
   const selectedQuestions: string[] = [];
   let i = 0;
   while (i < length) {
     const randomFieldIndex = Math.floor(Math.random() * 6);
     const randomQuestionIndex = Math.floor(Math.random() * 5);
-    const currField: string = Object.keys(questions)[randomFieldIndex]; //single field
-    // @ts-expect-error dynamic key
-    const currFieldQuestion: string = questions[currField][randomQuestionIndex];
+    const currField = Object.keys(suggestions)[
+      randomFieldIndex
+    ] as keyof SuggestionType; //single field
+    const currFieldQuestion: string =
+      suggestions[currField][randomQuestionIndex];
     if (!selectedQuestions.includes(currFieldQuestion)) {
       selectedQuestions.push(currFieldQuestion);
       i++;
     }
   }
   return selectedQuestions;
-};
+}
 const SuggestionsWrapper = ({
   setAIRes,
 }: {
@@ -32,6 +35,7 @@ const SuggestionsWrapper = ({
   const [randomGenSuggestions, setRandomGenSuggestions] = useState<string[]>(
     []
   );
+  const { decreaseCredits } = useCreditStore();
   useEffect(() => {
     setRandomGenSuggestions(randomQues(3));
   }, []);
@@ -41,9 +45,11 @@ const SuggestionsWrapper = ({
       suggestRef.current!.classList.add("no-userInteraction");
       const answer: AIRes = await prmtGemini(question);
       setAIRes(answer);
+      decreaseCredits();
     } catch {
-      suggestRef.current!.classList.remove("no-userInteraction");
       toast.error("Something went wrong", { duration: 1300 });
+    } finally {
+      suggestRef.current!.classList.remove("no-userInteraction");
     }
   }
 

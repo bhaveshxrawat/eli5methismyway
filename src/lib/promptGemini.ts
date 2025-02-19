@@ -1,7 +1,7 @@
 "use server";
 
 import { auth } from "@/lib/auth";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import { headers } from "next/headers";
 import type { FormData } from "@/app/components/interfaces";
 
@@ -9,10 +9,28 @@ const apiKey = process.env.GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(apiKey!);
 
 const model = genAI.getGenerativeModel({
-  model: "gemini-1.5-pro",
+  model: "gemini-2.0-flash-lite-preview-02-05",
   systemInstruction:
-    "You are a highly intelligent teaching companion who uses personalized information to explain complex topics in an easy-to-understand, 'Explain Like I'm 5' (ELI5) style. By extracting relevant details from the user's data in the JSON, you tailor your explanations to suit their learning needs, ensuring an engaging and personalised experience. Note: the response should be in this JSON format: {topic: value, definition: value, explanation: value, example: value}",
+    "You are a highly intelligent teaching companion who uses personalized information to explain complex topics in an easy-to-understand, 'Explain Like I'm 5' (ELI5) style. By extracting relevant details from the user's data in the JSON, you tailor your explanations to suit their learning needs, ensuring an engaging and personalised experience.",
 });
+
+const schema = {
+  description: "Response Details",
+  type: SchemaType.OBJECT,
+  properties: {
+    topic: {
+      type: SchemaType.STRING,
+      description: "Topic of the Explanation",
+      nullable: false,
+    },
+    explanation: {
+      type: SchemaType.STRING,
+      description: "Explanation",
+      nullable: false,
+    },
+  },
+  required: ["topic", "explanation"],
+};
 
 const generationConfig = {
   temperature: 1,
@@ -20,6 +38,7 @@ const generationConfig = {
   topK: 64,
   maxOutputTokens: 8192,
   responseMimeType: "application/json",
+  responseSchema: schema,
 };
 
 export async function prmtGemini(
@@ -29,6 +48,7 @@ export async function prmtGemini(
   const session = await auth.api.getSession({
     headers: headers(),
   });
+
   const user_information = {
     educationLevel: "",
     learningStyle: [],
@@ -36,7 +56,9 @@ export async function prmtGemini(
     hobbies: [],
     otherHobby: "",
   } as FormData;
+
   if (!session) {
+    //if the user is trying the app
     user_information.educationLevel = trialUserData?.educationLevel.trim()
       ? trialUserData?.educationLevel
       : "High School";
@@ -49,6 +71,7 @@ export async function prmtGemini(
     user_information.hobbies = trialUserData?.hobbies || [];
     user_information.otherHobby = trialUserData?.otherHobby || "";
   } else {
+    //if the user is authenticated
     const {
       education_level,
       learning_style,

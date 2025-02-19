@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { prmtGemini } from "@/lib/promptGemini";
 import { Dispatch, SetStateAction, useRef, useState } from "react";
@@ -5,6 +7,7 @@ import { toast } from "sonner";
 import type { AIRes } from "./interfaces";
 import { useTrialUserData } from "@/Provider/TrialUserDataProvider";
 import { useSession } from "@/lib/auth-client";
+import { useCreditStore } from "@/store/useCreditsStore";
 
 export default function AskForm({
   setAIRes,
@@ -13,6 +16,7 @@ export default function AskForm({
 }) {
   const { trialUserFormData, setTrialUserFormData, initialFormData } =
     useTrialUserData();
+  const { decreaseCredits } = useCreditStore();
   const taRef = useRef<HTMLTextAreaElement>(null);
   const [disableBtn, setDisableBtn] = useState(false);
   const { data: session } = useSession();
@@ -29,6 +33,7 @@ export default function AskForm({
         } else if (!session) {
           answer = await prmtGemini(question, trialUserFormData);
           setAIRes(answer);
+          decreaseCredits();
         }
       } catch (e) {
         console.log(e);
