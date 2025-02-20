@@ -3,11 +3,12 @@
 import SuggestionTile from "./Suggestions.Card";
 import { suggestions } from "@/lib/utils/suggestions";
 import "./Animations.css";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { AIRes } from "@/app/components/interfaces";
 import { prmtGemini } from "@/lib/promptGemini";
 import { toast } from "sonner";
 import { useCreditStore } from "@/store/useCreditsStore";
+import { useAIResponseStore } from "@/store/useAIResponseStore";
 
 function randomQues(length: number): string[] {
   const selectedQuestions: string[] = [];
@@ -27,24 +28,22 @@ function randomQues(length: number): string[] {
   }
   return selectedQuestions;
 }
-const SuggestionsWrapper = ({
-  setAIRes,
-}: {
-  setAIRes: Dispatch<SetStateAction<AIRes | null>>;
-}) => {
+const SuggestionsWrapper = () => {
   const [randomGenSuggestions, setRandomGenSuggestions] = useState<string[]>(
     []
   );
   const { decreaseCredits } = useCreditStore();
+  const { setResponse } = useAIResponseStore();
   useEffect(() => {
     setRandomGenSuggestions(randomQues(3));
   }, []);
   const suggestRef = useRef<HTMLDivElement>(null);
+
   async function suggestHandler(question: string) {
     try {
       suggestRef.current!.classList.add("no-userInteraction");
       const answer: AIRes = await prmtGemini(question);
-      setAIRes(answer);
+      setResponse(answer);
       decreaseCredits();
     } catch {
       toast.error("Something went wrong", { duration: 1300 });

@@ -2,21 +2,19 @@
 
 import { Button } from "@/components/ui/button";
 import { prmtGemini } from "@/lib/promptGemini";
-import { Dispatch, SetStateAction, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 import type { AIRes } from "./interfaces";
 import { useTrialUserData } from "@/Provider/TrialUserDataProvider";
 import { useSession } from "@/lib/auth-client";
 import { useCreditStore } from "@/store/useCreditsStore";
+import { useAIResponseStore } from "@/store/useAIResponseStore";
 
-export default function AskForm({
-  setAIRes,
-}: {
-  setAIRes: Dispatch<SetStateAction<AIRes | null>>;
-}) {
+export default function AskForm() {
   const { trialUserFormData, setTrialUserFormData, initialFormData } =
     useTrialUserData();
   const { decreaseCredits } = useCreditStore();
+  const { setResponse } = useAIResponseStore();
   const taRef = useRef<HTMLTextAreaElement>(null);
   const [disableBtn, setDisableBtn] = useState(false);
   const { data: session } = useSession();
@@ -29,16 +27,15 @@ export default function AskForm({
         let answer: AIRes;
         if (session) {
           answer = await prmtGemini(question);
-          setAIRes(answer);
+          setResponse(answer);
         } else if (!session) {
           answer = await prmtGemini(question, trialUserFormData);
-          setAIRes(answer);
+          setResponse(answer);
           decreaseCredits();
         }
       } catch (e) {
-        console.log(e);
+        console.log("Something wrong", e);
         toast.error("Something went wrong", { duration: 1300 });
-        setDisableBtn(false);
       } finally {
         setDisableBtn(false);
         taRef.current!.value = "";

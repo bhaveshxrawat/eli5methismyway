@@ -87,7 +87,7 @@ export async function prmtGemini(
     user_information.otherHobby = other_hobbies ?? "";
   }
 
-  const result = model.generateContent({
+  const result = await model.generateContent({
     generationConfig,
     contents: [
       {
@@ -108,5 +108,5 @@ export async function prmtGemini(
       },
     ],
   });
-  return JSON.parse((await result).response.text());
+  return JSON.parse(result.response.text());
 }

@@ -2,24 +2,21 @@
 
 import AskForm from "@/app/components/Ask.Form";
 import AskResultCard from "./Ask.ResultCard";
-import { useState } from "react";
-import type { AIRes } from "./interfaces";
 import SuggestionsWrapper from "./Suggestions.Wrapper";
+import { useAIResponseStore } from "@/store/useAIResponseStore";
 
 const ResAskFormWrapper = () => {
-  const [aiRes, setAIRes] = useState<AIRes | null>(null);
+  const { response } = useAIResponseStore();
   return (
     <div className="space-y-5">
-      {aiRes ? (
+      {response ? (
         <AskResultCard
-          definition={aiRes.definition}
-          topic={aiRes.topic}
-          example={aiRes.example}
-          explanation={aiRes.explanation}
+          topic={response.topic}
+          explanation={response.explanation}
         />
       ) : null}
-      <AskForm setAIRes={setAIRes} />
-      {!aiRes ? <SuggestionsWrapper setAIRes={setAIRes} /> : null}
+      <AskForm />
+      {!response ? <SuggestionsWrapper /> : null}
     </div>
   );
 };
